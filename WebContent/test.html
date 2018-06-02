@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Administrator</title>
+</head>
+<style>
+body{
+background : #d9ddf4;
+}
+#text{
+font-size: 20px;
+padding: 10px;
+}
+table{
+border-spacing: 100px 0px;
+table-layout: fixed;
+}
+#but{
+margin: 10px 0px;
+background-color: #89a590;
+border-radius: 5px;
+color: white;
+padding: 15px 32px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+font-size: 16px;
+}
+.box{
+background: #ecff99;
+font-size: 20px;
+}
+#h{
+font-family: 'Roboto Slab', serif;
+font-weight: 300; 
+font-size: 2em; 
+color: #8f52ea
+}
+</style>
+<body>
+<script src="al.js"></script>
+<input id = "but" type='button' style="float: right" onClick='log()' value='Log In' />
+<table><tr><td>
+<h3 id = "h">User Management</h3>
+ID: <br/><input class="box" id='id'/><br/>
+Password:<br/> <input class="box" id='pass' value='123'/><br/>
+Name:<br/> <input class="box" id='name'/><br/>
+Type:<br/><input class="box" id='type' value='student'><br/>
+<input id = "but" type='button' onClick='addUser()' value='Push User' /> &nbsp &nbsp &nbsp
+<input id = "but" type='button' onClick='removeUser()' value='Pop User' />
+
+<h3 id = "h">Question Management</h3>
+Statement:<br/> <input class="box" id='stmt'/><br/>
+Choice1: <br/><input class="box" id='c1' value=''/><br/>
+Choice2: <br/><input class="box" id='c2'/><br/>
+Choice3: <br/><input class="box" id='c3'/><br/>
+Choice4: <br/><input class="box" id='c4'/><br/>
+Answer: <br/><input class="box" id='ans' value='1'><br/>
+<input id = "but" type='button' onClick='addQuestion()' value='Push Question' /> &nbsp &nbsp &nbsp
+<input id = "but" type='button' onClick='removeQuestion()' value='Pop Question' />
+</td><td>
+<div id="output"></div>
+</td></tr></table>
+<script>
+function addUser() {
+  U.push({
+    id: getValue('id'),
+    password: getValue('pass'),
+    name: getValue('name'),
+    type: getValue('type'),
+  })
+  store(function() {
+    retrieveAndDisplay()
+  })
+}
+
+function removeUser() {
+  U.pop()
+  store(function() {
+    retrieveAndDisplay()
+  })
+}
+
+function addQuestion() {
+  Q.push({
+    statement: getValue('stmt'),
+    choices:[getValue('c1'),getValue('c2'),
+      getValue('c3'),getValue('c4')],
+    answer: getValue('ans')
+  })
+  store(function() {
+    retrieveAndDisplay()
+  })
+}
+
+function removeQuestion() {
+  Q.pop()
+  store(function() {
+    retrieveAndDisplay()
+  })
+}
+
+function retrieveAndDisplay() {
+  retrieve( function() {
+    var s = ''
+      s += '<h3 id = "h">Users</h3><ol>'
+      for( var i = 0; i < U.length; ++i ) 
+        s+='<li id="text">' + U[i].name + '</li>'
+      s+= '</ol><h3 id = "h">Questions and Choices</h3><ol>'
+      for( var i = 0; i < Q.length; ++i){
+    	s+='<li id="text">'+Q[i].statement+'</li> <ul>'
+    	var n = String(Q[i].choices).split(',')
+    	for( var j = 0; j < 4; ++j)
+    		s+='<li id="text">'+n[j]+'</li>'
+    		s+='</ul>'
+      }
+      s+= '</ol>'
+      
+      getElement('output').innerHTML = s
+  })
+}
+
+retrieveAndDisplay()
+
+function log(){
+	window.location = "login.html"
+}
+</script>
+</body>
+</html>

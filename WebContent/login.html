@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Sign In</title>
+
+	<!-- Google Fonts -->
+	<link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700|Lato:400,100,300,700,900' rel='stylesheet' type='text/css'>
+	<!-- Custom Stylesheet -->
+	<link rel="stylesheet" href="Style.css">
+</head>
+
+<body style="background : #d9ddf4;">
+<script src="al.js"></script>
+	<div>
+		<div class="top">
+			<h1 id="title">Welcome USER</h1>
+		</div>
+		<div class="login-box">
+			<div class="box-header">
+				<h2>Log In</h2>
+			</div>
+			<label for="username">Username</label>
+			<br/>
+			<input type="text" id="id">
+			<br/>
+			<label for="password">Password</label>
+			<br/>
+			<input type="password" id="pass">
+			<br/>
+			<input type="button" value="Sign In" onClick="validate()" /> &nbsp &nbsp
+			<input type="button" value="Register" onClick="admin()" />
+			<br/>
+			<span id ="output"></span>
+			<br/>
+			<p class="small"><a href="forgot.html">Forgot your password?</a></p>
+		</div>
+	</div>
+
+<script>
+	function validate() {
+	getElement("output").innerHTML = "Loading"
+	retrieve( () => {
+		var id = getValue("id")
+		var pass = getValue("pass")
+		User = U.find(u => u.id==id && u.password==pass)
+		setCookie()
+		if(User){
+			getElement("output").innerHTML = "Success"
+			window.location = User.type=="student" ? "exam.html": "questions.html"
+		}
+		else
+			getElement("output").innerHTML = "<h4 style='position: fixed;left: 48%; bottom: 11%; color: red;'>try again</h4>"
+	})
+}
+	function admin() {
+		window.location = "test.html"
+	}
+</script>
+</body>
+</html>

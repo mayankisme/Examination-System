@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Student</title>
+<link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700|Lato:400,100,300,700,900' rel='stylesheet' type='text/css'>
+</head>
+<style>
+body{
+background : #d9ddf4;
+}
+input{
+position: relative;
+background-color: #89a590;
+border-radius: 5px;
+color: white;
+padding: 15px 32px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+font-size: 16px;
+}
+#ques{
+padding: 10px;
+font-size: 20px;
+}
+#choice{
+font-size: 20px;
+padding: 10px;
+float: left;
+}
+#marks{
+margin-top: 50%;
+font-family: san francisco; font-weight: 300; font-size: 1.2em;
+color: #002160;
+background-color: #84fc05;
+width: 100px;
+padding: 10px;
+}
+table{
+border-spacing: 200px 0px;
+table-layout: fixed;
+}
+th{
+background-color: #64dbfc;
+width: 300px;
+}
+#timer{
+  text-align: center;
+  font-size: 30px;
+}
+</style>
+<body>
+<script src="al.js"></script>
+<div id="output" style="font-family: 'Roboto Slab', serif; font-weight: 300; font-size: 1.2em; color: #8f52ea;">Loading...</div>
+<input type="button" value="LOGOUT" onClick="logout()" style="top: 0px; float: right;" />
+<input type="button" value="EXAM" onClick="Questions()" style=""/>
+<input type="button" value="FINISH" onClick="Marks()" style="top: 25em; float: right; margin-left:1100px"/>
+<table>
+<tr>
+<th style="font-family: san-serif; font-weight: 300; font-size: 1.2em; color: #545354;"><h3>Questions</h3></th>
+<th style="font-family: san-serif; font-weight: 300; font-size: 1.2em; color: #545354;"><h3>Choices</h3></th>
+</tr>
+<tr>
+<td id="ques" onClick="Choices()"></td>
+<td id="choice"></td>
+</tr>
+<tr><td><div id="marks">MARKS: 0</div></td></tr>
+</table>
+<script>
+var now = 0;
+OnLoad(()=>{
+	if(User)
+		getElement("output").innerHTML = "<h1>Welcome " + User.name +"</h1>"
+	else{
+		getElement("output").innerHTML = "Who are you?"
+		return
+	}
+})
+
+function Questions() {
+  retrieve( function() {
+      var s = '<ol>'
+      for( var i = 0; i < Q.length; ++i)
+    	s+='<li>'+'<div onClick="Choices('+ i +')">'+Q[i].statement+'</div> </li>'
+      s+= '</ol>'
+      getElement('ques').innerHTML = s
+  })
+}
+function Choices(x) {
+	  retrieve( function() {
+		    var ch=1
+		    var s = ''
+			var n = String(Q[x].choices).split(',')
+		    for( var i = 0; i < 4; ++i)
+		  	s+='<input type="radio" id="'+ ch++ +'" onClick="check('+x+')" name="ch" style="align: left"/> ' +n[i]+ '<br/>'
+		    getElement('choice').innerHTML = s
+		  }) 
+}
+
+function check(x){
+	var ans = String(Q[x].answer)
+	if (document.getElementById(ans).checked == true){
+		now+=2
+	}
+	else if (now > 0)
+		--now
+	else
+		now = 0
+}
+function Marks()
+{
+	getElement('marks').innerHTML = 'MARKS: '+ now
+	}
+	
+</script>
+
+</body>
+</html>	
